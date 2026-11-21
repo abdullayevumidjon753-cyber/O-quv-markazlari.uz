@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDU FIND UZ — O'zbekistonda ta'lim topish va solishtirish</title>
+<link rel="icon" href="/img/favicon.svg">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#kurslar"><img src="/img/favicon.svg" alt="" width="28" height="28">EDU FIND UZ</a>
+  <nav>
+    <a href="#kurslar">Kurslar</a><a href="#taqqoslash">Taqqoslash</a><a href="#ai">AI yordamchi</a><a href="#yordam">Yordam</a>
+    <a href="#admin" id="nav-admin" hidden>Admin</a><a href="#sevimlilar" id="nav-fav" hidden>Sevimlilar</a>
+  </nav>
+  <div id="auth-area"><button class="btn ghost" id="login-btn">Kirish</button></div>
+</header>
+
+<main>
+<section class="hero">
+  <h1>Qayerda o'qishni bilmaysizmi? Shu yerdan boshlang.</h1>
+  <form id="search-form" class="search" role="search">
+    <input name="q" placeholder="Yo'nalish yoki markaz: dasturlash, ingliz tili…" aria-label="Qidiruv">
+    <input name="city" placeholder="Shahar: Toshkent, Urganch…" aria-label="Shahar">
+    <input name="maxPrice" type="number" min="0" step="10000" placeholder="Oylik byudjet (so'm)" aria-label="Byudjet">
+    <select name="format" aria-label="Format"><option value="">Online/oflayn</option><option value="online">Onlayn</option><option value="offline">Oflayn</option><option value="hybrid">Aralash</option></select>
+    <button class="btn" type="submit">Qidirish</button>
+  </form>
+  <p class="note">Narxlar faqat bazadagi, tekshirilgan sanasi bilan ko'rsatiladi. Byudjet filtri narxi ma'lum kurslarni qoldiradi.</p>
+</section>
+
+<section id="kurslar"><h2>Kurslar <span id="count" class="muted"></span></h2>
+  <div id="compare-bar" class="compare-bar" hidden><span id="compare-text"></span><button class="btn" id="compare-go">Taqqoslash</button><button class="btn ghost" id="compare-clear">Tozalash</button></div>
+  <div id="results" class="grid" aria-live="polite"></div>
+</section>
+
+<section id="taqqoslash" hidden><h2>Taqqoslash</h2><div class="scroll" id="compare-table"></div></section>
+<section id="sevimlilar" hidden><h2>Sevimli kurslar</h2><div id="fav-results" class="grid"></div></section>
+
+<section id="ai"><h2>AI ta'lim yordamchisi</h2>
+  <div class="chat">
+    <div id="chat-log" class="chat-log" aria-live="polite"><div class="bubble bot">Salom! Maqsadingizni yozing (masalan: "Toshkentda dasturlash kursi kerak, byudjet 500 ming"). Men faqat bazadagi ma'lumotlardan foydalanaman.</div></div>
+    <form id="chat-form" class="chat-form"><input name="m" maxlength="1000" placeholder="Savolingizni yozing…" aria-label="Xabar" required><button class="btn">Yuborish</button></form>
+  </div>
+</section>
+
+<section id="admin" hidden><h2>Administrator paneli</h2>
+  <div class="admin-grid">
+    <form id="course-form" class="card form"><h3>Yangi kurs qo'shish</h3>
+      <input name="title" placeholder="Kurs nomi" required><input name="center_name" placeholder="O'quv markazi" required>
+      <input name="category" placeholder="Yo'nalish" required><input name="city" placeholder="Shahar" required>
+      <input name="address" placeholder="Manzil"><input name="phone" placeholder="Telefon"><input name="website" placeholder="Veb-sayt (https://…)">
+      <select name="format"><option value="offline">Oflayn</option><option value="online">Onlayn</option><option value="hybrid">Aralash</option></select>
+      <input name="duration_months" type="number" step="0.5" min="0" placeholder="Davomiyligi (oy)"><input name="lessons_per_week" type="number" min="0" placeholder="Haftalik darslar">
+      <input name="teachers" placeholder="O'qituvchilar">
+      <select name="certificate"><option value="">Sertifikat: noma'lum</option><option value="1">Sertifikat bor</option><option value="">Yo'q/noma'lum</option></select>
+      <select name="job_help"><option value="">Ish bilan yordam: noma'lum</option><option value="1">Bor</option></select>
+      <select name="price_status"><option value="exact">Aniq narx</option><option value="range">Narx oralig'i</option><option value="on_request">So'rov orqali</option><option value="unavailable" selected>Narx mavjud emas</option></select>
+      <input name="price_min" type="number" min="0" placeholder="Narx (so'm/oy) yoki minimal"><input name="price_max" type="number" min="0" placeholder="Maksimal narx">
+      <label>Narx tekshirilgan sana <input name="price_checked_at" type="date"></label>
+      <input name="source_url" placeholder="Manba havolasi">
+      <button class="btn">Saqlash</button>
+    </form>
+    <div>
+      <div class="card"><h3>Moderatsiyadagi sharhlar</h3><div id="pending"></div></div>
+      <div class="card"><h3>Kurs ishonchlilik holati</h3><p class="muted">"Verified" uchun rasmiy manba havolasi majburiy.</p><div id="verify-list"></div></div>
+      <div class="card"><h3>Murojaatlar</h3><div id="support-list"></div></div>
+      <div class="card"><h3>Audit log</h3><div id="audit-list" class="small"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="yordam"><h2>Yordam markazi</h2>
+  <div class="two">
+    <form id="support-form" class="card form"><select name="kind"><option value="message">Xabar</option><option value="problem">Muammo haqida</option><option value="suggestion">Taklif</option></select>
+      <input name="contact" placeholder="Aloqa uchun (ixtiyoriy)"><textarea name="body" rows="4" maxlength="3000" placeholder="Xabaringiz" required></textarea><button class="btn">Yuborish</button></form>
+    <div class="card"><h3>Bog'lanish</h3><p><a href="https://t.me/moggerrrrrrr" rel="noopener">Telegram: @moggerrrrrrr</a></p><p><a href="https://www.instagram.com/moggerr.gg/" rel="noopener">Instagram: moggerr.gg</a></p><p class="muted">Oddiy yordam doim bepul.</p></div>
+  </div>
+</section>
+</main>
+
+<dialog id="auth-dialog"><form id="auth-form" class="form" method="dialog"><h3 id="auth-title">Kirish</h3>
+  <input name="name" placeholder="Ism" hidden><input name="email" type="email" placeholder="Email" required><input name="password" type="password" minlength="8" placeholder="Parol (kamida 8 belgi)" required>
+  <p id="auth-err" class="err" role="alert"></p><button class="btn">Davom etish</button><button type="button" class="btn ghost" id="auth-switch">Ro'yxatdan o'tish</button><button type="button" class="btn ghost" id="auth-close">Yopish</button></form></dialog>
+<dialog id="review-dialog"><form id="review-form" class="form" method="dialog"><h3 id="review-title">Sharh yozish</h3>
+  <label>Umumiy baho <select name="rating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
+  <label>O'qituvchi bahosi <select name="teacher_rating"><option value="">—</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
+  <textarea name="body" rows="4" minlength="20" placeholder="Fikringiz (kamida 20 belgi)" required></textarea><p id="review-err" class="err"></p>
+  <button class="btn">Moderatsiyaga yuborish</button><button type="button" class="btn ghost" id="review-close">Yopish</button></form></dialog>
+<div id="toast" class="toast" role="status"></div>
+<footer class="foot">© EDU FIND UZ — ma'lumotlar bazadan olinadi; tasdiqlanmagan ma'lumotlar tegishli belgi bilan ko'rsatiladi.</footer>
+<script src="/js/app.js"></script>
+</body>
+</html>

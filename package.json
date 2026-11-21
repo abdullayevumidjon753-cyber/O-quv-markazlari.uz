@@ -1,0 +1,9 @@
+{
+  "name": "edufinduz",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "engines": { "node": ">=18" },
+  "scripts": { "migrate": "node scripts/migrate.js", "start": "node server/server.js" },
+  "dependencies": { "pg": "^8.11.3" }
+}
